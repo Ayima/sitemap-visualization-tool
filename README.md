@@ -4,7 +4,7 @@ Source code repository for the ["How to visualize an XML sitemap using Python"](
 
 ## Extraction, Categorization and Visualization
 
-The code has been split into three scripts that can be [downloaded here](http://github.com/Ayima). Running these requires Python and external library dependencies as [detailed in the section below](#dependencies).
+The code has been split into three scripts that can be [downloaded here](https://github.com/Ayima/sitemap-visualization-tool/archive/master.zip). Running these requires Python and external library dependencies as [detailed in the section below](#dependencies).
 
 ### Reproducing our Results
 
