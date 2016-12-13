@@ -44,7 +44,7 @@ categorization_depth = args.depth
 
 def peel_layers(urls, layers=3):
     ''' Builds a dataframe containing all unique page identifiers up
-    to a specified depth and counting the number of sub-pages for each.
+    to a specified depth and counts the number of sub-pages for each.
     Prints results to a CSV file.
 
     urls : list
