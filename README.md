@@ -60,7 +60,8 @@ python visualize_urls.py
 
 Please ensure you have installed the dependencies before attempting to run the scripts.
 
-## Dependencies <a name="dependencies"></a>
+<a name="dependencies"></a>
+## Dependencies
 
 The code can run in Python 2 or 3 and the external library dependencies are as follows:
 
