@@ -1,6 +1,6 @@
 # Visualizing an XML sitemap using Python
 
-Source code repository for the ["How to visualize an XML sitemap using Python"](https://www.ayima.com/guides/visualize-xml-sitemap-using-python.html) Ayima blog post.
+Source code repository for the ["How to visualize an XML sitemap using Python"](https://www.ayima.com/guides/how-to-visualize-an-xml-sitemap-using-python.html) Ayima blog post.
 
 ![](IPython-notebook/static/sitemap_graph_2_layer.png)
 
