@@ -20,7 +20,7 @@ from __future__ import print_function
 
 # Set global variables
 
-categorization_depth = 3
+categorization_depth = 4
 
 
 # Import external library dependencies
