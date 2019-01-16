@@ -45,7 +45,7 @@ parser.add_argument('--style', type=str, default=style,
 parser.add_argument('--size', type=str, default=size,
                     help='Size of rendered graph')
 parser.add_argument('--output-format', type=str, default=output_format,
-                    help='Format of the graph you want to save it. Allowed formats are jpg, png, pdf or tif')
+                    help='Format of the graph you want to save. Allowed formats are jpg, png, pdf or tif')
 args = parser.parse_args()
 
 
