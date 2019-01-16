@@ -24,7 +24,8 @@ graph_depth = 3  # Number of layers deep to plot categorization
 limit = 50       # Maximum number of nodes for a branch
 title = ''       # Graph title
 style = 'light'  # Graph style, can be "light" or "dark"
-size = '8,5'     # Size of rendered PDF graph
+size = '8,5'     # Size of rendered graph
+format = 'png'   # Format of rendered image - pdf,png,tiff
 
 
 # Import external library dependencies
@@ -42,7 +43,9 @@ parser.add_argument('--title', type=str, default=title,
 parser.add_argument('--style', type=str, default=style,
                     help='Graph style, can be "light" or "dark"')
 parser.add_argument('--size', type=str, default=size,
-                    help='Size of rendered PDF graph')
+                    help='Size of rendered graph')
+parser.add_argument('--format', type=str, default=format,
+                    help='Format of the graph you want to save it. Allowed formats are jpg, png, pdf or tif')
 args = parser.parse_args()
 
 
@@ -53,11 +56,12 @@ limit = args.limit
 title = args.title
 style = args.style
 size = args.size
+format = args.format
 
 
 # Main script functions
 
-def make_sitemap_graph(df, layers=3, limit=50, size='8,5'):
+def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, format=format):
     ''' Make a sitemap graph up to a specified layer depth.
 
     sitemap_layers : DataFrame
@@ -70,6 +74,9 @@ def make_sitemap_graph(df, layers=3, limit=50, size='8,5'):
     limit : int
         The maximum number node edge connections. Good to set this
         low for visualizing deep into site maps.
+    
+    format : string
+        The type of file you want to save in PDF, PNG, TIFF, JPG
     '''
 
 
@@ -81,7 +88,7 @@ def make_sitemap_graph(df, layers=3, limit=50, size='8,5'):
 
 
     # Initialize graph
-    f = graphviz.Digraph('sitemap', filename='sitemap_graph_%d_layer' % layers)
+    f = graphviz.Digraph('sitemap', filename='sitemap_graph_%d_layer' % layers, format='%s' % format)
     f.body.extend(['rankdir=LR', 'size="%s"' % size])
 
 
@@ -227,11 +234,11 @@ def main():
 
     print('Building %d layer deep sitemap graph' % graph_depth)
     f = make_sitemap_graph(sitemap_layers, layers=graph_depth,
-                           limit=limit, size=size)
+                            limit=limit, size=size, format=format)
     f = apply_style(f, style=style, title=title)
 
     f.render(cleanup=True)
-    print('Exported graph to sitemap_graph_%d_layer.pdf' % graph_depth)
+    print('Exported graph to sitemap_graph_%d_layer.%s' % (graph_depth, format))
 
 
 if __name__ == '__main__':
