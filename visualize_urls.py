@@ -25,7 +25,7 @@ limit = 50       # Maximum number of nodes for a branch
 title = ''       # Graph title
 style = 'light'  # Graph style, can be "light" or "dark"
 size = '8,5'     # Size of rendered graph
-output_format = 'png'   # Format of rendered image - pdf,png,tiff
+output_format = 'pdf'   # Format of rendered image - pdf,png,tiff
 
 
 # Import external library dependencies
