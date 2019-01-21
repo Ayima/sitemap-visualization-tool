@@ -15,7 +15,7 @@ Before plugging in a new sitemap, you may wish to test the script by reproducing
 ```
 python extract_urls.py   
 python categorize_urls.py   
-python visualize_urls.py   
+python visualize_urls.py --depth 1   
 ```
 
 ### Plugging in an XML Sitemap URL
