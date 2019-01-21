@@ -46,6 +46,8 @@ parser.add_argument('--size', type=str, default=size,
                     help='Size of rendered graph')
 parser.add_argument('--output-format', type=str, default=output_format,
                     help='Format of the graph you want to save. Allowed formats are jpg, png, pdf or tif')
+parser.add_argument('--skip', type=str, default='',
+                    help='list of branches that you do not want to expand. Comma separated: i.e. --skip news,events,datasets')
 args = parser.parse_args()
 
 
@@ -57,11 +59,11 @@ title = args.title
 style = args.style
 size = args.size
 output_format = args.output_format
-
+skip = args.skip.split(',')
 
 # Main script functions
 
-def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_format=output_format):
+def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_format=output_format, skip=skip):
     ''' Make a sitemap graph up to a specified layer depth.
 
     sitemap_layers : DataFrame
@@ -77,6 +79,9 @@ def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_fo
     
     output_format : string
         The type of file you want to save in PDF, PNG, TIFF, JPG
+
+    skip : list
+        List of branches that you do not want to expand.
     '''
 
 
@@ -134,8 +139,9 @@ def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_fo
             data = df[mask].groupby([str(i)])['counts'].sum()\
                     .reset_index().sort_values(['counts'], ascending=False)
 
-            # Add to the graph
-            add_branch(f,
+            # Add to the graph unless specified that we do not want to expand k-1
+            if k[-1] not in skip:
+                add_branch(f,
                        names=data[str(i)].values,
                        vals=data['counts'].values,
                        limit=limit,
@@ -234,7 +240,7 @@ def main():
 
     print('Building %d layer deep sitemap graph' % graph_depth)
     f = make_sitemap_graph(sitemap_layers, layers=graph_depth,
-                            limit=limit, size=size, output_format=output_format)
+                            limit=limit, size=size, output_format=output_format, skip=skip)
     f = apply_style(f, style=style, title=title)
 
     f.render(cleanup=True)
