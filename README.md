@@ -81,16 +81,14 @@ The code can run in Python 2 or 3 and the external library dependencies are as f
 Once you have Python, these libraries can most likely be installed on any operating system with the following terminal commands:
 
 ```
-pip install requests   
-pip install beautifulsoup4   
-pip install pandas   
+pip install -r requirements.txt   
 ```
 
-The Graphviz library is more difficult to install. On Mac it can be done with the help of homebrew:
+If you are on Mac make sure to brew graphviz before to launch the pip command:
 
 ```
 brew install graphviz   
-pip install graphviz   
+pip install ir requirements.txt
 ```
 
 For other operating systems or alternate methods, check out the [installation instructions in the Graphviz documentation](http://graphviz.readthedocs.io/en/latest/manual.html).
