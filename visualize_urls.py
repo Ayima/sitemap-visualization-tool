@@ -26,7 +26,7 @@ title = ''       # Graph title
 style = 'light'  # Graph style, can be "light" or "dark"
 size = '8,5'     # Size of rendered graph
 output_format = 'pdf'   # Format of rendered image - pdf,png,tiff
-
+skip = ''        # List of branches to restrict from expanding
 
 # Import external library dependencies
 
@@ -46,8 +46,8 @@ parser.add_argument('--size', type=str, default=size,
                     help='Size of rendered graph')
 parser.add_argument('--output-format', type=str, default=output_format,
                     help='Format of the graph you want to save. Allowed formats are jpg, png, pdf or tif')
-parser.add_argument('--skip', type=str, default='',
-                    help='list of branches that you do not want to expand. Comma separated: i.e. --skip news,events,datasets')
+parser.add_argument('--skip', type=str, default=skip,
+        help="List of branches that you do not want to expand. Comma separated: e.g. --skip 'news,events,datasets'")
 args = parser.parse_args()
 
 
@@ -140,7 +140,7 @@ def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_fo
                     .reset_index().sort_values(['counts'], ascending=False)
 
             # Add to the graph unless specified that we do not want to expand k-1
-            if k[-1] not in skip:
+            if (not skip) or (k[-1] not in skip):
                 add_branch(f,
                        names=data[str(i)].values,
                        vals=data['counts'].values,

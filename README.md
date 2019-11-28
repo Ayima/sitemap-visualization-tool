@@ -15,7 +15,7 @@ Before plugging in a new sitemap, you may wish to test the script by reproducing
 ```
 python extract_urls.py   
 python categorize_urls.py   
-python visualize_urls.py   
+python visualize_urls.py --depth 1   
 ```
 
 ### Plugging in an XML Sitemap URL
@@ -45,6 +45,15 @@ The `visualize_urls.py` script also has a `--limit` argument that can be passed.
 ```
 python categorize_urls.py --depth 6   
 python visualize_urls.py --depth 6 --limit 2 --size "30"   
+```
+
+The graph save format can be specified with `--output-format` e.g. `python visualize_urls.py --output-format png`.
+
+Additionally, select nodes can be skipped (restrict children from rendering) using the `--skip` argument. For example:   
+```
+python extract_urls.py
+python categorize_urls.py
+python visualize_urls.py --depth 2 --skip 'product,brands,categories,find,campaigns,clearance,stores'   
 ```
 
 More detailed usage instructions are included in the header of each file.
