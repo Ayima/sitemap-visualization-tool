@@ -27,6 +27,7 @@ style = 'light'  # Graph style, can be "light" or "dark"
 size = '8,5'     # Size of rendered graph
 output_format = 'pdf'   # Format of rendered image - pdf,png,tiff
 skip = ''        # List of branches to restrict from expanding
+only = ''        # List of branches to restrict from expanding
 
 # Import external library dependencies
 
@@ -48,6 +49,8 @@ parser.add_argument('--output-format', type=str, default=output_format,
                     help='Format of the graph you want to save. Allowed formats are jpg, png, pdf or tif')
 parser.add_argument('--skip', type=str, default=skip,
         help="List of branches that you do not want to expand. Comma separated: e.g. --skip 'news,events,datasets'")
+parser.add_argument('--only', type=str, default=only,
+        help="List of branches that you want to visualize. Comma separated: e.g. --only 'news,events,datasets'")
 args = parser.parse_args()
 
 
@@ -60,10 +63,11 @@ style = args.style
 size = args.size
 output_format = args.output_format
 skip = args.skip.split(',')
+only = args.only.split(',')
 
 # Main script functions
 
-def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_format=output_format, skip=skip):
+def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_format=output_format, skip=skip, only=only):
     ''' Make a sitemap graph up to a specified layer depth.
 
     sitemap_layers : DataFrame
@@ -82,6 +86,9 @@ def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_fo
 
     skip : list
         List of branches that you do not want to expand.
+
+    only : list
+        List of branches that you want to visualize.
     '''
 
 
@@ -123,7 +130,7 @@ def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_fo
 
     f.attr('node', shape='oval') # Plot nodes as ovals
     f.graph_attr.update()
-
+    
     # Loop over each layer adding nodes and edges to prior nodes
     for i in range(1, layers+1):
         cols = [str(i_) for i_ in range(i)]
@@ -138,15 +145,14 @@ def make_sitemap_graph(df, layers=graph_depth, limit=limit, size=size, output_fo
             # Select the data then count branch size, sort, and truncate
             data = df[mask].groupby([str(i)])['counts'].sum()\
                     .reset_index().sort_values(['counts'], ascending=False)
-
             # Add to the graph unless specified that we do not want to expand k-1
-            if (not skip) or (k[-1] not in skip):
-                add_branch(f,
-                       names=data[str(i)].values,
-                       vals=data['counts'].values,
-                       limit=limit,
-                       connect_to='-'.join(['%s']*i) % tuple(k))
-
+            if (skip == ['']) or (k[-1] not in skip):
+                if (only == ['']) or (k[-1] in only) or (i == 1):
+                    add_branch(f,
+                        names=data[str(i)].values,
+                        vals=data['counts'].values,
+                        limit=limit,
+                        connect_to='-'.join(['%s']*i) % tuple(k))
             print(('Built graph up to node %d / %d in layer %d' % (j, len(nodes), i))\
                     .ljust(50), end='\r')
 
@@ -240,7 +246,7 @@ def main():
 
     print('Building %d layer deep sitemap graph' % graph_depth)
     f = make_sitemap_graph(sitemap_layers, layers=graph_depth,
-                            limit=limit, size=size, output_format=output_format, skip=skip)
+                            limit=limit, size=size, output_format=output_format, skip=skip, only=only)
     f = apply_style(f, style=style, title=title)
 
     f.render(cleanup=True)
